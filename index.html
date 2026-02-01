@@ -9,6 +9,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
 body{
   min-height:100vh;
   background:#000;
@@ -18,24 +19,24 @@ body{
   overflow:hidden;
 }
 
-/* 🌸 LOTUS + HEART BACKGROUND */
-#bg-effects{
+/* 🌸 BACKGROUND EFFECTS */
+#bg{
   position:fixed;
   inset:0;
   z-index:0;
   pointer-events:none;
 }
-.bg-item{
+.bg-float{
   position:absolute;
-  bottom:-50px;
-  font-size:28px;
-  animation:floatBg linear infinite;
-  opacity:.9;
+  bottom:-40px;
+  font-size:26px;
+  opacity:.85;
+  animation:float 10s linear forwards;
 }
-@keyframes floatBg{
-  from{transform:translateY(0) rotate(0deg) scale(.8);opacity:0}
-  20%{opacity:1}
-  to{transform:translateY(-120vh) rotate(360deg) scale(1.4);opacity:0}
+@keyframes float{
+  from{transform:translateY(0) scale(.8);opacity:0}
+  15%{opacity:1}
+  to{transform:translateY(-120vh) scale(1.3);opacity:0}
 }
 
 /* 🎥 VIDEO */
@@ -47,70 +48,109 @@ body{
   object-fit:cover;
   display:none;
   z-index:1;
-  filter:brightness(.65);
+  filter:brightness(.6);
 }
 
-/* MAIN CARD */
+/* CARD */
 .container{
   background:rgba(255,255,255,.38);
   backdrop-filter:blur(14px);
   padding:40px;
-  border-radius:25px;
+  border-radius:24px;
   text-align:center;
-  max-width:440px;
+  max-width:460px;
   z-index:3;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  transition:.4s;
 }
-h1{color:#b0003a;font-size:2.3rem;margin-bottom:20px}
+.container.active{
+  box-shadow:0 0 50px rgba(255,77,109,.9);
+}
+
+h1{
+  color:#b0003a;
+  font-size:2.4rem;
+  margin-bottom:22px;
+}
 
 /* BUTTONS */
-.buttons{display:flex;justify-content:center;gap:20px}
-button{
-  padding:14px 32px;border:none;border-radius:50px;
-  font-size:1.1rem;cursor:pointer
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  position:relative;
 }
-#yesBtn{background:#ff4d6d;color:#fff}
-#noBtn{background:#444;color:#fff;position:fixed}
+button{
+  padding:14px 34px;
+  border:none;
+  border-radius:50px;
+  font-size:1.1rem;
+  cursor:pointer;
+}
+#yesBtn{
+  background:#ff4d6d;
+  color:#fff;
+  animation:pulse 1.4s infinite alternate;
+}
+@keyframes pulse{
+  from{box-shadow:0 0 10px rgba(255,77,109,.6)}
+  to{box-shadow:0 0 28px rgba(255,77,109,1)}
+}
+#noBtn{
+  background:#444;
+  color:#fff;
+  position:fixed;
+}
 
 /* POEM */
-.poem{display:none;margin-top:20px;font-size:1.05rem;color:#7a002f;line-height:1.7}
+.poem{
+  display:none;
+  margin-top:22px;
+  font-size:1.05rem;
+  color:#6f0028;
+  line-height:1.75;
+  min-height:260px;
+}
 
-/* 🌸 LOTUS POPUP */
+/* 🌸 POPUP */
 .popup{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  display:flex;justify-content:center;align-items:center;z-index:6
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:6;
 }
 .popup-box{
-  background:#fff;padding:30px;border-radius:25px;text-align:center;
-  animation:pop .6s ease
+  background:#fff;
+  padding:28px;
+  border-radius:24px;
+  text-align:center;
+  animation:pop .6s ease;
 }
-@keyframes pop{from{scale:.6;opacity:0}to{scale:1;opacity:1}}
+@keyframes pop{
+  from{transform:scale(.6);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
 
-/* 🎆 FIREWORKS */
-.firework{
-  position:fixed;width:6px;height:6px;border-radius:50%;
-  animation:boom 1.5s ease-out forwards
+/* ✨ SPARKLES */
+.sparkle{
+  position:fixed;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:spark 1.8s ease-out forwards;
 }
-@keyframes boom{
+@keyframes spark{
   to{transform:translate(var(--x),var(--y));opacity:0}
-}
-
-/* 💍 YES SCREEN */
-#yesScreen{
-  position:fixed;inset:0;background:#000;
-  display:none;justify-content:center;align-items:center;
-  flex-direction:column;z-index:10;color:#fff;text-align:center
-}
-#yesScreen h1{font-size:3rem;color:#ff4d6d}
-#yesScreen button{
-  margin-top:20px;background:#ff4d6d;color:#fff
 }
 </style>
 </head>
 
 <body>
 
-<div id="bg-effects"></div>
+<div id="bg"></div>
 
 <video id="loveVideo" muted loop playsinline>
   <source src="l.mp4" type="video/mp4">
@@ -120,112 +160,131 @@ button{
   <source src="a.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 🌸 POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box">
-    <div style="font-size:60px">🪷💖</div>
-    <h2>Something beautiful awaits…</h2>
+    <div style="font-size:58px">🪷💖</div>
+    <h2 style="color:#ff4d6d;margin-top:10px">
+      Something beautiful is about to begin…
+    </h2>
   </div>
 </div>
 
 <div class="container" id="card">
   <h1>Will You Be My Valentine? 🪷💖</h1>
+
   <div class="buttons">
     <button id="yesBtn">YES ❤️</button>
     <button id="noBtn">NO 💔</button>
   </div>
+
   <div class="poem" id="poem"></div>
 </div>
 
-<div id="yesScreen">
-  <h1>SHE SAID YES 💍💖</h1>
-  <button onclick="replay()">Replay 🔁</button>
-</div>
-
 <script>
-/* BACKGROUND LOTUS */
-const bg=document.getElementById("bg-effects");
+/* 🌸 OPTIMIZED BACKGROUND LOOP */
+const bg=document.getElementById("bg");
 const symbols=["🪷","❤️","💖"];
-let speed=180;
 setInterval(()=>{
   const e=document.createElement("div");
-  e.className="bg-item";
+  e.className="bg-float";
   e.innerText=symbols[Math.floor(Math.random()*symbols.length)];
   e.style.left=Math.random()*100+"vw";
-  e.style.animationDuration=Math.random()*4+6+"s";
+  e.style.animationDuration=(8+Math.random()*4)+"s";
   bg.appendChild(e);
-  setTimeout(()=>e.remove(),10000);
-},speed);
+  setTimeout(()=>e.remove(),12000);
+},300);
 
-/* POPUP CLOSE */
-setTimeout(()=>popup.style.display="none",3000);
+/* CLOSE POPUP */
+setTimeout(()=>popup.style.display="none",2600);
 
-/* NO UNTOUCHABLE */
-noBtn.onmousemove=()=> {
-  noBtn.style.left=Math.random()*(innerWidth-80)+"px";
-  noBtn.style.top=Math.random()*(innerHeight-40)+"px";
-};
-
-/* POEM */
-const poemLines=[
-"🪷 Like a lotus, my heart bloomed for you",
-"💖 Soft, calm, and beautifully true",
-"✨ Every smile feels like fate",
-"💍 I choose you — today and always"
-];
-let l=0,c=0;
-function typePoem(){
-  poem.style.display="block";
-  if(l<poemLines.length){
-    if(c<poemLines[l].length){
-      poem.innerHTML+=poemLines[l][c++];
-      setTimeout(typePoem,40);
-    }else{
-      poem.innerHTML+="<br>";l++;c=0;setTimeout(typePoem,300)
-    }
+/* NO = UNTOUCHABLE (OPTIMIZED) */
+document.addEventListener("mousemove",e=>{
+  const r=noBtn.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
+  if(dx*dx+dy*dy<15000){
+    noBtn.style.left=Math.random()*(innerWidth-r.width)+"px";
+    noBtn.style.top=Math.random()*(innerHeight-r.height)+"px";
   }
-}
+});
 
-/* MUSIC + VIDEO */
-const music=bgMusic, video=loveVideo;
+/* ✍️ NEW LONG ROMANTIC POEM */
+const poemLines=[
+"🪷 Like a lotus rising untouched by the storm,",
+"My heart found its calm in you, warm and pure.",
+"💖 Not loud, not sudden — just quietly true,",
+"A feeling that grew every moment I knew you.",
+
+"✨ In your presence, time learns to slow,",
+"Even silence feels gentle, even shadows glow.",
+"🌸 I don’t need promises written in gold,",
+"Just your hand in mine when nights feel cold.",
+
+"❤️ If love is a journey with no fixed end,",
+"I’d walk every road as long as you’re there.",
+"💫 So this isn’t a question born from chance,",
+"It’s my heart asking yours for a forever chance."
+];
+
+let line=0,char=0;
+const poem=document.getElementById("poem");
+
+/* 🎶 MUSIC + 🎥 VIDEO */
+const music=document.getElementById("bgMusic");
+const video=document.getElementById("loveVideo");
 music.volume=0;
+
 function playMusic(){
   music.currentTime=0;
   music.play().then(()=>{
     let v=0;
-    const f=setInterval(()=>{
-      v+=.05;music.volume=v;if(v>=1)clearInterval(f)
+    const fade=setInterval(()=>{
+      v+=0.04;
+      music.volume=Math.min(v,1);
+      if(v>=1) clearInterval(fade);
     },100);
   });
 }
 
-/* FIREWORKS */
-function fireworks(){
-  for(let i=0;i<60;i++){
-    const f=document.createElement("div");
-    f.className="firework";
-    f.style.left="50%";f.style.top="50%";
-    f.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    f.style.setProperty("--x",(Math.random()*400-200)+"px");
-    f.style.setProperty("--y",(Math.random()*400-200)+"px");
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),1500);
+function typePoem(){
+  poem.style.display="block";
+  if(line<poemLines.length){
+    if(char<poemLines[line].length){
+      poem.innerHTML+=poemLines[line][char++];
+      setTimeout(typePoem,35);
+    }else{
+      poem.innerHTML+="<br>";
+      line++; char=0;
+      setTimeout(typePoem,280);
+    }
+  }
+}
+
+/* ✨ SPARKLES */
+function sparkles(){
+  for(let i=0;i<40;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left="50%";
+    s.style.top="50%";
+    s.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    s.style.setProperty("--x",(Math.random()*400-200)+"px");
+    s.style.setProperty("--y",(Math.random()*400-200)+"px");
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1800);
   }
 }
 
 /* YES CLICK */
 yesBtn.onclick=()=>{
-  video.style.display="block";video.play();
-  playMusic();typePoem();fireworks();
-  speed=90;
-  setTimeout(()=>yesScreen.style.display="flex",4500);
+  video.style.display="block";
+  video.play().catch(()=>{});
+  playMusic();
+  typePoem();
+  sparkles();
+  card.classList.add("active");
 };
-
-/* REPLAY */
-function replay(){
-  yesScreen.style.display="none";
-  poem.innerHTML="";l=0;c=0;
-  playMusic();typePoem();fireworks();
-}
 </script>
 
 </body>
