@@ -180,7 +180,7 @@ document.addEventListener("mousemove",e=>{
   }
 });
 
-/* POEM – STRONG ENGLISH */
+/* POEM */
 const poemLines=[
 "You arrived without spectacle, yet altered the architecture of my days,",
 "A quiet inevitability I never thought to resist.",
@@ -198,6 +198,8 @@ const poemLines=[
 
 const poem=document.getElementById("poem");
 let i=0,j=0;
+let poemFinished=false;
+
 function type(){
   poem.style.display="block";
   if(i<poemLines.length){
@@ -209,6 +211,10 @@ function type(){
       i++;j=0;
       setTimeout(type,360);
     }
+  }else{
+    poemFinished=true;
+    // give time to READ
+    setTimeout(()=>final.style.display="flex",9000);
   }
 }
 
@@ -232,7 +238,6 @@ yes.onclick=()=>{
   startRain();
   type();
   if(navigator.vibrate) navigator.vibrate([60,80,60]);
-  setTimeout(()=>final.style.display="flex",14000);
 };
 </script>
 
