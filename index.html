@@ -11,44 +11,64 @@
 
 <style>
 :root{
-  --bg:#2a0013;
+  --bg1:#ff9fc9;
+  --bg2:#2a0013;
   --card:#fff1f7;
   --primary:#ff4f9a;
-  --accent:#ff9fc9;
+  --accent:#ffb6d9;
   --text:#3b0a1e;
 }
 
+/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
 
+/* BACKGROUND BREATHING */
 body{
   min-height:100vh;
-  background:radial-gradient(circle at top,#ff9fc9,#2a0013);
+  background:linear-gradient(120deg,var(--bg1),var(--bg2));
+  background-size:200% 200%;
+  animation:bgMove 18s ease-in-out infinite;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
 }
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
-/* FLOATING LOVE */
+/* FLOATING ICONS */
 .pop{
   position:fixed;
   bottom:-40px;
   font-size:26px;
-  animation:floatUp 11s linear forwards;
   pointer-events:none;
+  animation:floatUp linear forwards;
   z-index:2;
 }
 @keyframes floatUp{
-  from{transform:translateY(0) scale(.8);opacity:0}
+  from{transform:translateY(0) scale(.6);opacity:0}
   15%{opacity:1}
-  to{transform:translateY(-130vh) scale(1.4);opacity:0}
+  to{transform:translateY(-140vh) scale(1.5);opacity:0}
 }
 
-/* HEARTBEAT */
-@keyframes beat{
-  0%{transform:scale(1)}
-  30%{transform:scale(1.06)}
-  60%{transform:scale(1)}
+/* SPARKLES */
+.sparkle{
+  position:fixed;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:white;
+  opacity:.7;
+  animation:spark 3s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes spark{
+  from{transform:scale(0);opacity:0}
+  30%{opacity:.8}
+  to{transform:scale(1.5) translateY(-40px);opacity:0}
 }
 
 /* VIDEO */
@@ -63,53 +83,61 @@ video{
   z-index:1;
 }
 
-/* CARD */
+/* CARD FLOAT + HEARTBEAT */
 main{
   position:relative;
   z-index:3;
   background:var(--card);
-  padding:46px;
-  border-radius:28px;
-  width:min(92vw,430px);
+  padding:48px;
+  border-radius:30px;
+  width:min(92vw,440px);
   text-align:center;
-  box-shadow:0 45px 90px rgba(255,79,154,.45);
-  animation:beat 1.6s infinite;
+  box-shadow:0 50px 100px rgba(255,79,154,.45);
+  animation:floatCard 6s ease-in-out infinite;
+}
+@keyframes floatCard{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
 }
 
 h1{
-  font-size:2.3rem;
+  font-size:2.35rem;
   color:var(--text);
+  animation:glow 3s ease-in-out infinite;
+}
+@keyframes glow{
+  0%,100%{text-shadow:0 0 0 transparent}
+  50%{text-shadow:0 0 12px rgba(255,79,154,.4)}
 }
 
 /* BUTTONS */
 .buttons{
-  margin-top:34px;
+  margin-top:36px;
   position:relative;
   height:64px;
 }
 
 button{
-  padding:15px 38px;
+  padding:15px 40px;
   border-radius:999px;
   border:none;
   font-size:1.1rem;
-  cursor:pointer;
 }
 
 /* YES */
 #yes{
   background:linear-gradient(135deg,var(--primary),var(--accent));
   color:#fff;
-  box-shadow:0 0 0 rgba(255,79,154,.6);
+  cursor:pointer;
   animation:pulse 2.2s infinite;
 }
 @keyframes pulse{
   0%{box-shadow:0 0 0 0 rgba(255,79,154,.6)}
-  70%{box-shadow:0 0 0 24px rgba(255,79,154,0)}
+  70%{box-shadow:0 0 0 26px rgba(255,79,154,0)}
   100%{box-shadow:0 0 0 0 rgba(255,79,154,0)}
 }
 
-/* NO – NEVER */
+/* NO */
 #no{
   background:#ffd4e8;
   color:#7a1b3a;
@@ -121,25 +149,35 @@ button{
 /* POEM */
 #poem{
   display:none;
-  margin-top:36px;
-  font-size:1.05rem;
-  line-height:1.9;
+  margin-top:38px;
+  font-size:1.08rem;
+  line-height:2;
   color:#4a0f29;
+  animation:fadeIn 2s ease forwards;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
 }
 
-/* FINAL SCREEN */
+/* FINAL */
 #final{
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at center,#ff9fc9,#2a0013);
+  background:radial-gradient(circle,#ffb6d9,#2a0013);
   display:none;
   justify-content:center;
   align-items:center;
   z-index:10;
-  color:#fff;
-  font-size:3rem;
+  color:white;
+  font-size:3.2rem;
   font-weight:600;
   text-align:center;
+  animation:finalIn 2.5s ease forwards;
+}
+@keyframes finalIn{
+  from{opacity:0;transform:scale(.9)}
+  to{opacity:1;transform:scale(1)}
 }
 </style>
 </head>
@@ -149,10 +187,7 @@ button{
 <video id="video" muted loop playsinline>
   <source src="l.mp4" type="video/mp4">
 </video>
-
-<audio id="audio">
-  <source src="a.mp3" type="audio/mpeg">
-</audio>
+<audio id="audio"><source src="a.mp3"></audio>
 
 <main>
   <h1>Will you be my Valentine?</h1>
@@ -168,67 +203,76 @@ button{
 <div id="final">I choose you.<br>Every day.</div>
 
 <script>
-/* NO BUTTON ESCAPE */
+/* NO ESCAPE */
 const no=document.getElementById("no");
 document.addEventListener("mousemove",e=>{
   const r=no.getBoundingClientRect();
-  const dx=e.clientX-(r.left+r.width/2);
-  const dy=e.clientY-(r.top+r.height/2);
-  if(Math.sqrt(dx*dx+dy*dy)<130){
-    no.style.left=Math.random()*(window.innerWidth-120)+"px";
-    no.style.top=Math.random()*(window.innerHeight-80)+"px";
+  const d=Math.hypot(
+    e.clientX-(r.left+r.width/2),
+    e.clientY-(r.top+r.height/2)
+  );
+  if(d<130){
+    no.style.left=Math.random()*(innerWidth-120)+"px";
+    no.style.top=Math.random()*(innerHeight-80)+"px";
   }
 });
 
 /* POEM */
 const poemLines=[
-"You arrived without spectacle, yet altered the architecture of my days,",
-"A quiet inevitability I never thought to resist.",
+"You arrived without spectacle, yet rewrote the geometry of my days,",
+"A presence so precise it rendered coincidence obsolete.",
 
-"In your presence, chaos becomes articulate,",
-"And even uncertainty learns restraint.",
+"With you, even chaos acquires syntax,",
+"And longing learns patience.",
 
-"I do not seek a fleeting moment,",
-"But the discipline of choosing you, deliberately, endlessly.",
+"I am not asking for a moment,",
+"But for the courage to choose each other, repeatedly, deliberately.",
 
 "If you say yes,",
-"I will not promise perfection—",
-"Only constancy, depth, and devotion."
+"I will offer depth over drama,",
+"And devotion that does not waver."
 ];
-
 const poem=document.getElementById("poem");
 let i=0,j=0;
-let poemFinished=false;
-
 function type(){
   poem.style.display="block";
   if(i<poemLines.length){
     if(j<poemLines[i].length){
       poem.innerHTML+=poemLines[i][j++];
-      setTimeout(type,34);
+      setTimeout(type,32);
     }else{
       poem.innerHTML+="<br>";
       i++;j=0;
-      setTimeout(type,360);
+      setTimeout(type,380);
     }
   }else{
-    poemFinished=true;
-    // give time to READ
-    setTimeout(()=>final.style.display="flex",9000);
+    setTimeout(()=>final.style.display="flex",10000);
   }
 }
 
-/* CONTINUOUS HEARTS + LOTUS */
+/* FLOATING LOVE */
 function startRain(){
   setInterval(()=>{
     const e=document.createElement("div");
     e.className="pop";
     e.textContent=Math.random()>.5?"❤️":"🪷";
     e.style.left=Math.random()*100+"vw";
+    e.style.fontSize=20+Math.random()*20+"px";
+    e.style.animationDuration=8+Math.random()*6+"s";
     document.body.appendChild(e);
-    setTimeout(()=>e.remove(),11000);
-  },380);
+    setTimeout(()=>e.remove(),14000);
+  },300);
 }
+
+/* SPARKLES */
+setInterval(()=>{
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),3000);
+},600);
 
 /* YES */
 yes.onclick=()=>{
@@ -237,7 +281,7 @@ yes.onclick=()=>{
   audio.play();
   startRain();
   type();
-  if(navigator.vibrate) navigator.vibrate([60,80,60]);
+  if(navigator.vibrate) navigator.vibrate([60,90,60]);
 };
 </script>
 
