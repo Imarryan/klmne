@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine ❤️</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        /* ❤️ HEARTS */
+        
+        .heart {
+            position: absolute;
+            bottom: -30px;
+            font-size: 20px;
+            animation: floatUp linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes floatUp {
+            from {
+                transform: translateY(0) scale(.7);
+                opacity: 0
+            }
+            20% {
+                opacity: 1
+            }
+            to {
+                transform: translateY(-120vh) scale(1.4);
+                opacity: 0
+            }
+        }
+        /* CARD */
+        
+        .container {
+            background: rgba(255, 255, 255, .35);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+            max-width: 440px;
+            z-index: 2;
+        }
+        
+        h1 {
+            color: #b0003a;
+            font-size: 2.3rem;
+            margin-bottom: 20px;
+        }
+        /* BUTTONS */
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+        
+        button {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        /* YES */
+        
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            animation: glow 1.4s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(255, 77, 109, .6)
+            }
+            to {
+                box-shadow: 0 0 25px rgba(255, 77, 109, 1)
+            }
+        }
+        /* NO */
+        
+        #noBtn {
+            background: #444;
+            color: white;
+            position: absolute;
+            transition: .15s linear;
+        }
+        /* POEM */
+        
+        .poem {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.05rem;
+            color: #7a002f;
+            line-height: 1.7;
+            min-height: 220px;
+        }
+        /* POPUP */
+        
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+        
+        .popup-content {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            width: 320px;
+            text-align: center;
+        }
+        
+        .slider img {
+            width: 100%;
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .slider img.active {
+            display: block
+        }
+        /* CONFETTI */
+        
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            animation: fall 2s linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 🎵 AUDIO -->
+    <audio id="bgMusic" preload="auto" loop>
+  <source src="a.mp3" type="audio/mpeg">
+</audio>
+
+    <!-- 🐱 IMAGE POPUP -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h2 style="color:#ff4d6d;margin-bottom:12px;">Hi 🐱💖</h2>
+            <div class="slider">
+                <img src="kl.jpg" class="active">
+                <img src="pj.jpg">
+                <img src="pl.jpg">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Will You Be My Valentine? 💖</h1>
+
+        <div class="buttons" id="btnArea">
+            <button id="yesBtn">YES ❤️</button>
+            <button id="noBtn">NO 💔</button>
+        </div>
+
+        <div class="poem" id="poem"></div>
+    </div>
+
+    <script>
+        /* ❤️ HEARTS */
+        setInterval(() => {
+            const h = document.createElement("div");
+            h.className = "heart";
+            h.innerText = "❤️";
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.animationDuration = Math.random() * 3 + 4 + "s";
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 8000);
+        }, 120);
+
+        /* 🐱 SLIDER */
+        const imgs = document.querySelectorAll(".slider img");
+        let si = 0;
+        setInterval(() => {
+            imgs[si].classList.remove("active");
+            si = (si + 1) % imgs.length;
+            imgs[si].classList.add("active");
+        }, 2000);
+
+        /* CLOSE POPUP */
+        setTimeout(() => popup.style.display = "none", 4000);
+
+        /* 😈 NO DODGE */
+        noBtn.onmouseenter = () => {
+            const x = Math.random() * (btnArea.offsetWidth - noBtn.offsetWidth);
+            const y = Math.random() * 30;
+            noBtn.style.transform = `translate(${x}px,${y}px)`;
+        };
+
+        /* 💖 LONG ROMANTIC POEM */
+        const poemLines = [
+            "💕 From the moment you smiled, my world felt new",
+            "✨ Like the sky learned a softer shade of blue",
+            "🌸 Every laugh of yours feels like a song",
+            "💫 A place where my restless heart belongs",
+
+            "💖 In your eyes, I see my tomorrow",
+            "🌷 A promise of joy, a cure for sorrow",
+            "🥰 Even silence feels warm and kind",
+            "🌙 When your presence stays on my mind",
+
+            "❤️ If love is a journey, walk with me",
+            "🌍 Through every moment, wherever we be",
+            "💞 Hand in hand, through night and day",
+            "✨ Choosing you — in every way",
+
+            "💐 So here I stand, heart open and true",
+            "💘 Hoping this moment reaches you",
+            "🥺 Will you be the reason I smile each day?",
+            "💍 Will you be my Valentine… and stay? 💖"
+        ];
+
+        const poem = document.getElementById("poem");
+        let l = 0,
+            c = 0;
+
+        /* 🎶 MUSIC */
+        const music = document.getElementById("bgMusic");
+        music.volume = 0;
+
+        function playMusic() {
+            music.currentTime = 0;
+            music.play().then(() => {
+                let v = 0;
+                const fade = setInterval(() => {
+                    v += 0.04;
+                    music.volume = Math.min(v, 1);
+                    if (v >= 1) clearInterval(fade);
+                }, 100);
+            });
+        }
+
+        /* TYPEWRITER */
+        function typePoem() {
+            poem.style.display = "block";
+            if (l < poemLines.length) {
+                if (c < poemLines[l].length) {
+                    poem.innerHTML += poemLines[l][c++];
+                    setTimeout(typePoem, 40);
+                } else {
+                    poem.innerHTML += "<br>";
+                    l++;
+                    c = 0;
+                    setTimeout(typePoem, 350);
+                }
+            }
+        }
+
+        /* CONFETTI */
+        function confetti() {
+            for (let i = 0; i < 80; i++) {
+                const c = document.createElement("div");
+                c.className = "confetti";
+                c.style.left = Math.random() * 100 + "vw";
+                c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+                c.style.animationDuration = Math.random() * 1 + 1.5 + "s";
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 2000);
+            }
+        }
+
+        /* YES CLICK */
+        yesBtn.onclick = () => {
+            playMusic();
+            typePoem();
+            confetti();
+        };
+    </script>
+
+</body>
+
+</html>
