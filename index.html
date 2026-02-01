@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be My Valentine ❤️</title>
+<title>Be My Valentine 🪷💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-
 body{
   min-height:100vh;
+  background:#000;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
-  background:#000;
 }
 
 /* 🌸 LOTUS + HEART BACKGROUND */
@@ -48,118 +47,63 @@ body{
   object-fit:cover;
   display:none;
   z-index:1;
-  filter:brightness(.7);
+  filter:brightness(.65);
 }
 
-/* ❤️ FLOATING HEARTS */
-.heart{
-  position:absolute;
-  bottom:-30px;
-  font-size:20px;
-  animation:floatUp linear infinite;
-  pointer-events:none;
-}
-@keyframes floatUp{
-  from{transform:translateY(0) scale(.7);opacity:0}
-  20%{opacity:1}
-  to{transform:translateY(-120vh) scale(1.4);opacity:0}
-}
-
-/* CARD */
+/* MAIN CARD */
 .container{
-  background:rgba(255,255,255,.35);
-  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.38);
+  backdrop-filter:blur(14px);
   padding:40px;
   border-radius:25px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
   max-width:440px;
-  z-index:2;
+  z-index:3;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
-
-h1{
-  color:#b0003a;
-  font-size:2.3rem;
-  margin-bottom:20px;
-}
+h1{color:#b0003a;font-size:2.3rem;margin-bottom:20px}
 
 /* BUTTONS */
-.buttons{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  position:relative;
-}
-
+.buttons{display:flex;justify-content:center;gap:20px}
 button{
-  padding:14px 32px;
-  border:none;
-  border-radius:50px;
-  font-size:1.1rem;
-  cursor:pointer;
+  padding:14px 32px;border:none;border-radius:50px;
+  font-size:1.1rem;cursor:pointer
 }
-
-/* YES */
-#yesBtn{
-  background:#ff4d6d;
-  color:white;
-  animation:glow 1.4s infinite alternate;
-}
-@keyframes glow{
-  from{box-shadow:0 0 10px rgba(255,77,109,.6)}
-  to{box-shadow:0 0 25px rgba(255,77,109,1)}
-}
-
-/* NO */
-#noBtn{
-  background:#444;
-  color:white;
-  position:fixed;
-}
+#yesBtn{background:#ff4d6d;color:#fff}
+#noBtn{background:#444;color:#fff;position:fixed}
 
 /* POEM */
-.poem{
-  display:none;
-  margin-top:20px;
-  font-size:1.05rem;
-  color:#7a002f;
-  line-height:1.7;
-  min-height:240px;
-}
+.poem{display:none;margin-top:20px;font-size:1.05rem;color:#7a002f;line-height:1.7}
 
-/* POPUP */
+/* 🌸 LOTUS POPUP */
 .popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:5;
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:flex;justify-content:center;align-items:center;z-index:6
 }
-.popup-content{
-  background:white;
-  padding:25px;
-  border-radius:20px;
-  width:320px;
-  text-align:center;
+.popup-box{
+  background:#fff;padding:30px;border-radius:25px;text-align:center;
+  animation:pop .6s ease
 }
-.slider img{
-  width:100%;
-  border-radius:15px;
-  display:none;
-}
-.slider img.active{display:block}
+@keyframes pop{from{scale:.6;opacity:0}to{scale:1;opacity:1}}
 
-/* CONFETTI */
-.confetti{
-  position:fixed;
-  width:8px;
-  height:8px;
-  animation:fall 2s linear forwards;
+/* 🎆 FIREWORKS */
+.firework{
+  position:fixed;width:6px;height:6px;border-radius:50%;
+  animation:boom 1.5s ease-out forwards
 }
-@keyframes fall{
-  to{transform:translateY(100vh) rotate(720deg);opacity:0}
+@keyframes boom{
+  to{transform:translate(var(--x),var(--y));opacity:0}
+}
+
+/* 💍 YES SCREEN */
+#yesScreen{
+  position:fixed;inset:0;background:#000;
+  display:none;justify-content:center;align-items:center;
+  flex-direction:column;z-index:10;color:#fff;text-align:center
+}
+#yesScreen h1{font-size:3rem;color:#ff4d6d}
+#yesScreen button{
+  margin-top:20px;background:#ff4d6d;color:#fff
 }
 </style>
 </head>
@@ -176,108 +120,59 @@ button{
   <source src="a.mp3" type="audio/mpeg">
 </audio>
 
-<!-- IMAGE POPUP -->
 <div class="popup" id="popup">
-  <div class="popup-content">
-    <h2 style="color:#ff4d6d;margin-bottom:12px;">Hi 🐱💖</h2>
-    <div class="slider">
-      <img src="kl.jpg" class="active">
-      <img src="pj.jpg">
-      <img src="pl.jpg">
-    </div>
+  <div class="popup-box">
+    <div style="font-size:60px">🪷💖</div>
+    <h2>Something beautiful awaits…</h2>
   </div>
 </div>
 
-<div class="container">
-  <h1>Will You Be My Valentine? 💖</h1>
-
+<div class="container" id="card">
+  <h1>Will You Be My Valentine? 🪷💖</h1>
   <div class="buttons">
     <button id="yesBtn">YES ❤️</button>
     <button id="noBtn">NO 💔</button>
   </div>
-
   <div class="poem" id="poem"></div>
 </div>
 
+<div id="yesScreen">
+  <h1>SHE SAID YES 💍💖</h1>
+  <button onclick="replay()">Replay 🔁</button>
+</div>
+
 <script>
-/* 🌸 LOTUS + HEART BG */
+/* BACKGROUND LOTUS */
 const bg=document.getElementById("bg-effects");
-const symbols=["🪷","❤️","🪷","❤️"];
+const symbols=["🪷","❤️","💖"];
+let speed=180;
 setInterval(()=>{
-  const el=document.createElement("div");
-  el.className="bg-item";
-  el.innerText=symbols[Math.floor(Math.random()*symbols.length)];
-  el.style.left=Math.random()*100+"vw";
-  el.style.fontSize=Math.random()*18+22+"px";
-  el.style.animationDuration=Math.random()*4+6+"s";
-  bg.appendChild(el);
-  setTimeout(()=>el.remove(),10000);
-},140);
+  const e=document.createElement("div");
+  e.className="bg-item";
+  e.innerText=symbols[Math.floor(Math.random()*symbols.length)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=Math.random()*4+6+"s";
+  bg.appendChild(e);
+  setTimeout(()=>e.remove(),10000);
+},speed);
 
-/* ❤️ EXTRA HEARTS */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerText="❤️";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=Math.random()*3+4+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
-},180);
+/* POPUP CLOSE */
+setTimeout(()=>popup.style.display="none",3000);
 
-/* SLIDER */
-const imgs=document.querySelectorAll(".slider img");
-let si=0;
-setInterval(()=>{
-  imgs[si].classList.remove("active");
-  si=(si+1)%imgs.length;
-  imgs[si].classList.add("active");
-},2000);
-setTimeout(()=>popup.style.display="none",4000);
-
-/* NO = UNTOUCHABLE */
-const noBtn=document.getElementById("noBtn");
-document.addEventListener("mousemove",(e)=>{
-  const r=noBtn.getBoundingClientRect();
-  const dx=e.clientX-(r.left+r.width/2);
-  const dy=e.clientY-(r.top+r.height/2);
-  if(Math.sqrt(dx*dx+dy*dy)<120){
-    noBtn.style.left=Math.random()*(innerWidth-r.width)+"px";
-    noBtn.style.top=Math.random()*(innerHeight-r.height)+"px";
-  }
-});
+/* NO UNTOUCHABLE */
+noBtn.onmousemove=()=> {
+  noBtn.style.left=Math.random()*(innerWidth-80)+"px";
+  noBtn.style.top=Math.random()*(innerHeight-40)+"px";
+};
 
 /* POEM */
 const poemLines=[
-"🌸 From the moment you appeared, my heart felt calm",
-"🪷 Like a lotus blooming, soft and warm",
-"❤️ Every smile of yours feels like home",
-"✨ Every moment with you, I want forever",
-
-"💖 If love is a choice, I choose you again",
-"🌙 In joy, in chaos, in sunshine or rain",
-"🥰 So here I am, honest and true",
-"💍 Asking softly… will you stay too?"
+"🪷 Like a lotus, my heart bloomed for you",
+"💖 Soft, calm, and beautifully true",
+"✨ Every smile feels like fate",
+"💍 I choose you — today and always"
 ];
 let l=0,c=0;
-const poem=document.getElementById("poem");
-
-/* MUSIC + VIDEO */
-const music=document.getElementById("bgMusic");
-const video=document.getElementById("loveVideo");
-music.volume=0;
-
-function playMusic(){
-  music.play().then(()=>{
-    let v=0;
-    const fade=setInterval(()=>{
-      v+=0.04;
-      music.volume=Math.min(v,1);
-      if(v>=1) clearInterval(fade);
-    },100);
-  });
-}
-
 function typePoem(){
   poem.style.display="block";
   if(l<poemLines.length){
@@ -285,35 +180,53 @@ function typePoem(){
       poem.innerHTML+=poemLines[l][c++];
       setTimeout(typePoem,40);
     }else{
-      poem.innerHTML+="<br>";
-      l++;c=0;
-      setTimeout(typePoem,300);
+      poem.innerHTML+="<br>";l++;c=0;setTimeout(typePoem,300)
     }
   }
 }
 
-function confetti(){
-  for(let i=0;i<80;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    c.style.animationDuration=Math.random()*1+1.5+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),2000);
+/* MUSIC + VIDEO */
+const music=bgMusic, video=loveVideo;
+music.volume=0;
+function playMusic(){
+  music.currentTime=0;
+  music.play().then(()=>{
+    let v=0;
+    const f=setInterval(()=>{
+      v+=.05;music.volume=v;if(v>=1)clearInterval(f)
+    },100);
+  });
+}
+
+/* FIREWORKS */
+function fireworks(){
+  for(let i=0;i<60;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left="50%";f.style.top="50%";
+    f.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    f.style.setProperty("--x",(Math.random()*400-200)+"px");
+    f.style.setProperty("--y",(Math.random()*400-200)+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1500);
   }
 }
 
 /* YES CLICK */
 yesBtn.onclick=()=>{
-  video.style.display="block";
-  video.play().catch(()=>{});
-  playMusic();
-  typePoem();
-  confetti();
+  video.style.display="block";video.play();
+  playMusic();typePoem();fireworks();
+  speed=90;
+  setTimeout(()=>yesScreen.style.display="flex",4500);
 };
+
+/* REPLAY */
+function replay(){
+  yesScreen.style.display="none";
+  poem.innerHTML="";l=0;c=0;
+  playMusic();typePoem();fireworks();
+}
 </script>
 
 </body>
 </html>
-
